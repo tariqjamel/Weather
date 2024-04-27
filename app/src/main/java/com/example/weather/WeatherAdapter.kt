@@ -1,5 +1,6 @@
 package com.example.weather
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,8 +9,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
-class WeatherAdapter(private val onItemClick: (Weather) -> Unit) :
+class WeatherAdapter(private val onItemClick: (Weather) -> Unit, private val viewModel: WeatherViewModel) :
     ListAdapter<Weather, WeatherAdapter.WeatherViewHolder>(WeatherDiffCallback()) {
+
+    private val cityLocations = mutableListOf<String>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_weather, parent, false)
@@ -28,7 +31,9 @@ class WeatherAdapter(private val onItemClick: (Weather) -> Unit) :
 
         fun bind(weather: Weather) {
             locationTextView.text = weather.location
-            temperatureTextView.text = String.format("%.2f°C", weather.temperature)
+            temperatureTextView.text = String.format("%.0f°C", weather.temperature)
+            cityLocations.add(weather.location) // store the city location
+            Log.d("WeatherAdapter", "Location: ${weather.location}")
         }
     }
 
@@ -40,5 +45,11 @@ class WeatherAdapter(private val onItemClick: (Weather) -> Unit) :
         override fun areContentsTheSame(oldItem: Weather, newItem: Weather): Boolean {
             return oldItem == newItem
         }
+    }
+
+
+    fun getCities(): List<String> {
+        Log.d("Weather", "Location: ${cityLocations}")
+        return cityLocations
     }
 }

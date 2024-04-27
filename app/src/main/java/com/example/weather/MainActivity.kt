@@ -2,6 +2,7 @@ package com.example.weather
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -10,6 +11,8 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather.databinding.ActivityMainBinding
+import java.util.Timer
+import java.util.TimerTask
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: WeatherViewModel
@@ -24,11 +27,11 @@ class MainActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this, WeatherViewModelFactory(application)).get(WeatherViewModel::class.java)
 
-        adapter = WeatherAdapter { weather ->
+        adapter = WeatherAdapter({ weather ->
             val intent = Intent(this, DetailActivity::class.java)
-            intent.putExtra("weather",weather)
+            intent.putExtra("weather", weather)
             startActivity(intent)
-        }
+        }, viewModel)
 
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
@@ -57,7 +60,6 @@ class MainActivity : AppCompatActivity() {
                 viewModel.updateWeather(city, API_KEY)
             }
         })*/
-
     }
 
     private val swipeToDeleteCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
@@ -71,4 +73,5 @@ class MainActivity : AppCompatActivity() {
             viewModel.deleteWeather(weather)
         }
     }
+
 }

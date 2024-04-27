@@ -18,7 +18,6 @@ interface WeatherDao {
 
     @Update
     suspend fun update(weather: Weather)
-
     @Delete
     suspend fun delete(weather: Weather)
 }

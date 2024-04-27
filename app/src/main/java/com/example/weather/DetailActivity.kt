@@ -46,6 +46,17 @@ class DetailActivity : AppCompatActivity() {
             popupMenu.show()
         }
 
+        viewModel.getForecast(weather.location).observe(this) { forecastList ->
+            binding.forecastRecyclerView.apply {
+                layoutManager = LinearLayoutManager(this@DetailActivity, LinearLayoutManager.HORIZONTAL, false)
+                adapter = ForecastAdapter(emptyList())
+            }
+
+            viewModel.getForecast(weather.location).observe(this) { forecastList ->
+                (binding.forecastRecyclerView.adapter as ForecastAdapter).updateList(forecastList)
+            }
+        }
+
         changeImage(weather)
     }
 
@@ -74,7 +85,7 @@ class DetailActivity : AppCompatActivity() {
             temperatureTextView.text = "${weather.temperature}°C"
             feelLike.text = "${weather.feel_like}°C"
             visiblity.text = "${weather.visibilty}m"
-            updatedAt.text = SimpleDateFormat("yyyy-MM-dd hh a", Locale.getDefault()).format(Date(weather.updatedAt * 1000))
+            updatedAt.text = SimpleDateFormat("yyyy-MM-dd hh-mm a", Locale.getDefault()).format(Date(weather.updatedAt * 1000))
             wind.text = weather.windSpeed.toString()
             pressure.text = "${weather.pressure} hPa"
             humidity.text = weather.humidity.toString()

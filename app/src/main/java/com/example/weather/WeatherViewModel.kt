@@ -3,12 +3,9 @@ package com.example.weather
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class WeatherViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -43,6 +40,13 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
     fun deleteWeather(weather: Weather) {
         viewModelScope.launch {
             repository.deleteWeather(weather)
+        }
+    }
+
+    fun getForecast(location: String): LiveData<List<Forecast>> {
+        return liveData {
+            val forecast = repository.getForecast(location, API_KEY)
+            emit(forecast)
         }
     }
 

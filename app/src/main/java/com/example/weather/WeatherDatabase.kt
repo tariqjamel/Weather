@@ -24,7 +24,7 @@ abstract class WeatherDatabase: RoomDatabase(){
                     instance = Room.databaseBuilder(
                         context.applicationContext,
                         WeatherDatabase::class.java,
-                        "weather_database6"
+                        "weather_database7"
                     ).build()
                     INSTANCE = instance
                 }

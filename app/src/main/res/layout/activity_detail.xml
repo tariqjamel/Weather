@@ -42,7 +42,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_centerInParent="true">
+            android:layout_marginTop="211dp">
 
         <TextView
             android:id="@+id/temperatureTextView"
@@ -318,20 +318,6 @@
     </LinearLayout>
 
 </RelativeLayout>
-    <ProgressBar
-        android:id="@+id/loader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone"/>
-
-    <TextView
-        android:id="@+id/errorText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone"
-        android:text="Something went wrong"/>
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottie_Animation"
@@ -350,5 +336,12 @@
         android:layout_marginTop="8dp"
         android:layout_alignParentRight="true"
         android:src="@drawable/dot32"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/forecast_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="359dp"/>
+
 
 </RelativeLayout>

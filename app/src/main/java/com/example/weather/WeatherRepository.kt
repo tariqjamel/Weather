@@ -3,6 +3,8 @@ package com.example.weather
 import android.util.Log
 import androidx.lifecycle.LiveData
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class WeatherRepository(private val weatherDao: WeatherDao, private val weatherApi: WeatherApi) {
@@ -40,6 +42,7 @@ class WeatherRepository(private val weatherDao: WeatherDao, private val weatherA
         }
     }
 
+
     suspend fun updateWeather(weather: Weather) {
         weatherDao.update(weather)
     }
@@ -47,4 +50,16 @@ class WeatherRepository(private val weatherDao: WeatherDao, private val weatherA
     suspend fun deleteWeather(weather: Weather) {
         weatherDao.delete(weather)
     }
+
+    suspend fun getForecast(city: String, apiKey: String): List<Forecast> {
+        Log.d("WeatherRepository", "Refreshing forecast for city: $city")
+        try {
+            val response = weatherApi.getForecast(city,apiKey)
+            return response.list
+        } catch (e: Exception) {
+            Log.e("WeatherRepository", "Error refreshing forecast: ${e.message}")
+            return emptyList()
+        }
+    }
+
 }
