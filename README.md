@@ -39,7 +39,7 @@ The Weather App is a Kotlin-based Android application that allows users to check
 ## Screenshots
 
 
-<img  align="left" src="main_page.hpeg" width="20%" height="20%">
+<img  align="left" src="main_page.jpeg" width="20%" height="20%">
 <img  align="left" src="cloud_page.jpeg" width="20%" height="20%">
 <img  align="left" src="rain_page.jpeg" width="20%" height="20%">
 <img  src="sun_page.jpeg" width="20%" height="20%">
