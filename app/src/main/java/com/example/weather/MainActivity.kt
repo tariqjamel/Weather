@@ -3,6 +3,7 @@ package com.example.weather
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -41,25 +42,27 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.weather.observe(this, Observer {
             adapter.submitList(it)
+            it.firstOrNull()?.let { weatherItem ->
+                if (weatherItem.location != city) {
+                    city = weatherItem.location
+                    viewModel.updateWeather( API_KEY)
+                }
+            }
+        })
+
+        viewModel.progressBarVisibility.observe(this, Observer {
+            binding.progressBar.visibility = it
         })
 
         binding.btnRefresh.setOnClickListener {
             var location = binding.etSearch.text.toString().trim()
             if (location.isNotEmpty()) {
                 val apiKey = API_KEY
+                binding.progressBar.visibility = View.VISIBLE
                 viewModel.refreshWeather(location, apiKey)
                 binding.etSearch.text.clear()
-                Toast.makeText(this, "Please wait", Toast.LENGTH_SHORT).show()
             }
         }
-
-     /*   viewModel.weather.observe(this, Observer {
-            adapter.submitList(it)
-            it.firstOrNull()?.let { weatherItem ->
-                city = weatherItem.location
-                viewModel.updateWeather(city, API_KEY)
-            }
-        })*/
     }
 
     private val swipeToDeleteCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {

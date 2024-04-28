@@ -14,5 +14,3 @@ data class Main(
 )
 
 data class ForecastResponse(val list: List<Forecast>)
-
-//data class Forecast(val date: Long, val temperature: Double, val description: String)

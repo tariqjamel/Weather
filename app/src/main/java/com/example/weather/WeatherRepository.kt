@@ -35,13 +35,18 @@ class WeatherRepository(private val weatherDao: WeatherDao, private val weatherA
                     updatedAt = response.updatedAt
                 )
 
-                weatherDao.insert(weather)
+                val existingWeather = weatherDao.getWeatherByLocation(city)
+                if (existingWeather != null) {
+                    weather.id = existingWeather.id
+                    weatherDao.update(weather)
+                } else {
+                    weatherDao.insert(weather)
+                }
             }
         } catch (e: Exception) {
             Log.e("WeatherRepository", "Error refreshing weather: ${e.message}")
         }
     }
-
 
     suspend fun updateWeather(weather: Weather) {
         weatherDao.update(weather)

@@ -1,16 +1,21 @@
 package com.example.weather
 
 import android.app.Application
+import android.view.View
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import java.util.Timer
+import java.util.TimerTask
 
 class WeatherViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository: WeatherRepository
     val weather: LiveData<List<Weather>>
+    val progressBarVisibility: MutableLiveData<Int> = MutableLiveData()
 
     init {
         val weatherDao = WeatherDatabase.getInstance(application).weatherDao()
@@ -20,21 +25,27 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
 
     fun refreshWeather(location: String, apiKey: String) {
         viewModelScope.launch {
-            val existingWeather = repository.weather.value?.find {
-                it.location == location
-            }
-            if (existingWeather != null) {
-                repository.updateWeather(existingWeather)
-            } else {
-                repository.refreshWeather(location, apiKey)
-            }
+            repository.refreshWeather(location, apiKey)
+            progressBarVisibility.value = View.GONE
         }
     }
 
-    fun updateWeather(location: String, apiKey: String) {
+    fun updateWeather(apiKey: String) {
         viewModelScope.launch {
-            repository.refreshWeather(location, apiKey)
+            val weatherList = repository.weather.value
+            if (weatherList != null) {
+                for (weather in weatherList) {
+                    repository.refreshWeather(weather.location, apiKey)
+                }
+            }
         }
+
+        val timer = Timer()
+        timer.schedule(object : TimerTask() {
+            override fun run() {
+                updateWeather(apiKey)
+            }
+        }, 5 * 60 * 1000)
     }
 
     fun deleteWeather(weather: Weather) {

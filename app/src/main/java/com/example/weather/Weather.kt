@@ -9,7 +9,7 @@ import android.os.Parcelable
 @Entity(tableName = "weather")
 data class Weather(
     @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
+    var id: Long = 0,
     val location: String,
     val temperature: Double,
     val minTemperature: Double,

@@ -20,4 +20,8 @@ interface WeatherDao {
     suspend fun update(weather: Weather)
     @Delete
     suspend fun delete(weather: Weather)
+
+    @Query("SELECT * FROM weather WHERE location = :location")
+    suspend fun getWeatherByLocation(location: String): Weather?
+
 }
