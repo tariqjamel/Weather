@@ -3,7 +3,7 @@ package com.example.weather
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-val API_KEY = "6bf1d26e0c11fc57da3784996152b2be"
+val API_KEY = "Your API key"
 
 object RetrofitClient {
     private const val BASE_URL = "https://api.openweathermap.org/data/2.5/"
